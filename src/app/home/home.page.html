@@ -1,0 +1,136 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="headerColor">
+    <ion-title class="font-mono text-2xl font-extrabold text-center text-white">
+     Covid - 19 Live Update
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div  color="white">
+    <ion-list class="text-center py-4 px-3 instant-rfq">
+      <h4 class="px-2 mt-2 ion-text-center text-white">Bangladesh</h4>
+      <p class="px-2 mt-2 ion-text-center text-white">Corona Virus Update</p>
+      <ion-grid class="mt-2">
+        <ion-row>
+          <ion-col class="text-white border-r border-gray-400">
+            <h1 class="text-5xl my-0">{{coronaData?.todayCases | number: '2.'}}</h1>
+            <p>Today</p>
+          </ion-col>
+          <ion-col class="text-white border-r border-gray-400">
+            <h1 class="text-5xl my-0 text-white">{{coronaData?.cases | number: '2.'}}</h1>
+            <p>Total</p>
+          </ion-col>
+          <ion-col class="text-white border-r border-gray-400">
+            <h1 class="text-5xl my-0 text-white">{{coronaData?.deaths | number: '2.'}}</h1>
+            <p>Deaths</p>
+          </ion-col>
+          <ion-col class="text-white">
+            <h1 class="text-5xl my-0 text-white">{{coronaData?.recovered | number: '2.'}}</h1>
+            <p>Recovered</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-list>
+  </div>
+
+  <div class="pxy">
+    <h4 class="font-mono text-teal-500 text-center">Confirmed Cases and Deaths by Country, Territory, or Conveyance</h4>
+    <div class="corona-cover p-3 text-center text-white">
+      <h1 class="font-bold">World Wide</h1>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <h6 class="font-bold text-sm mb-1 mt-0">Total<br>Cases:</h6>
+            <p class="text-purple-800 text-lg">{{coronaAllData?.cases | number: '2.'}}</p>
+          </ion-col>
+          <ion-col>
+            <h6 class="font-bold text-sm mb-1 mt-0">Total<br>Deaths:</h6>
+            <p class="text-red-800 text-lg">{{coronaAllData?.deaths | number: '2.'}}</p>
+          </ion-col>
+          <ion-col>
+            <h6 class="font-bold text-sm mb-1 mt-0">Total<br>Recovered:</h6>
+            <p class="text-green-800 text-lg">{{coronaAllData?.recovered | number: '2.'}}</p>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <h6 class="font-bold text-sm mb-1 mt-0">Total<br>Active:</h6>
+            <p class="text-black text-lg">{{coronaAllData?.active | number: '2.'}}</p>
+          </ion-col>
+          <ion-col>
+            <h6 class="font-bold text-sm mb-1 mt-0">Affected<br>Countries:</h6>
+            <p class="text-purple-800 text-lg">{{coronaAllData?.affectedCountries | number: '2.'}}</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+    <ion-searchbar class="px-6" placeholder="Search By Country Name" debounce="5" (ionChange)="onSearchTerm($event)">
+    </ion-searchbar>
+    <div *ngIf="filterData?.length <= 0" class="ion-text-center" style="z-index: 1;position: relative;margin-top: 10px;">
+      <ion-spinner ></ion-spinner>
+    </div>
+    <div *ngIf="filterData?.length > 0; else noItems">
+      <div *ngFor="let country of filterData">
+        <ion-item>
+          <ion-avatar class="w-16">
+            <ion-img class="rounded" [src]="country.countryInfo?.flag || '../assets/images/alter.gif'"></ion-img>
+          </ion-avatar>
+          <div class="w-full ml-2 text-center">
+            <h2 class="font-bold mx-2 mb-0">{{country?.country}}</h2>
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <h6 class="font-bold text-xs mb-1 mt-0">Today Cases:</h6>
+                  <p class="text-red-500">{{country?.todayCases | number: '2.'}}</p>
+                </ion-col>
+                <ion-col>
+                  <h6 class="font-bold text-xs mb-1 mt-0 whitespace-no-wrap">Total Recovered:</h6>
+                  <p class="text-green-600">{{country?.recovered | number: '2.'}}</p>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <h6 class="font-bold text-xs mb-1 mt-0">Today Deaths:</h6>
+                  <p class="text-orange-600">{{country?.todayDeaths | number: '2.'}}</p>
+                </ion-col>
+                <ion-col>
+                  <h6 class="font-bold text-xs mb-1 mt-0">Total Active:</h6>
+                  <p class="text-purple-600">{{country?.active | number: '2.'}}</p>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <h6 class="font-bold text-xs mb-1 mt-0">Total<br>Cases:</h6>
+                  <p class="text-blue-600">{{country?.cases | number: '2.'}}</p>
+                </ion-col>
+                <ion-col>
+                  <h6 class="font-bold text-xs mb-1 mt-0">Total<br>Deaths:</h6>
+                  <p class="text-red-600">{{country?.deaths | number: '2.'}}</p>
+                </ion-col>
+                <ion-col>
+                  <h6 class="font-bold text-xs mb-1 mt-0">Total<br>Critical:</h6>
+                  <p class="text-yellow-600">{{country?.critical | number: '2.'}}</p>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
+        </ion-item>
+      </div>
+    </div>
+    <ng-template #noItems>
+      <ion-item>
+        collecting data ...
+      </ion-item>
+    </ng-template>
+  </div>
+
+
+  <!--  <ion-list>
+      <app-message *ngFor="let message of getMessages()" [message]="message"></app-message>
+    </ion-list>-->
+</ion-content>
