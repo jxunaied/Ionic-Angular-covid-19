@@ -1,6 +1,6 @@
 # Ionic Angular covid-19
     This simple ionic 5 project that fetch the data from api end point and show the data on home page.
-    For css i use <b>TailWindcss</b>
+    For css i use -- TailWindcss --
     FrameWork: Ionic 5
     Language: Angular
     API Source:
